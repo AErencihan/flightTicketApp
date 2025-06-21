@@ -44,7 +44,7 @@ services:
       - spring.datasource.url=jdbc:postgresql://postgres:5432/flightticketapp?useSSL=false&createDatabaseIfNotExist=true
       - spring.data.redis.url=redis://redis:6379
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       - db
       - redis
