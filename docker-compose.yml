@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    environment:
+      redis_password: password
+    ports:
+      - "6379:6379"
+    networks:
+      - my-network
+
+  redis-insight:
+    image: redislabs/redisinsight:1.14.0
+    container_name: redis-insight
+    ports:
+      - "8001:8001"
+    environment:
+      - REDISINSIGHT_REDIS_URI=redis://redis:6379
+    networks:
+      - my-network
+
+  db:
+    image: postgres
+    container_name: postgress
+    environment:
+      POSTGRES_DB: flightticket
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - my-network
+
+networks:
+  my-network:
