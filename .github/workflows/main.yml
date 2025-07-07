@@ -12,13 +12,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Clean disk space
+        run: |
+          sudo docker system prune -a --volumes --force
+          sudo docker builder prune --all --force
+          sudo rm -rf /root/.m2/repository
+          sudo rm -rf /home/ec2-user/actions-runner/_work/_actions
+          sudo rm -rf /home/ec2-user/actions-runner/_work/_temp
+          sudo rm -rf /tmp/*
+          sudo truncate -s 0 /var/log/*.log
+        shell: bash
 
       - name: Build Docker image
         run: |
