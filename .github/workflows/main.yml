@@ -10,7 +10,9 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Clean disk space
         run: |
@@ -20,6 +22,8 @@ jobs:
           sudo rm -rf /home/ec2-user/actions-runner/_work/_actions
           sudo rm -rf /home/ec2-user/actions-runner/_work/_temp
           sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /var/cache/*
           sudo truncate -s 0 /var/log/*.log
         shell: bash
 
@@ -30,8 +34,24 @@ jobs:
 
   deploy:
     runs-on: self-hosted
+    needs: build
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Clean disk space
+        run: |
+          sudo docker system prune -a --volumes --force
+          sudo docker builder prune --all --force
+          sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /var/cache/*
+          sudo truncate -s 0 /var/log/*.log
+        shell: bash
+
       - name: Deploy to server
         run: |
-          sudo bash -c 'cd /home/ec2-user/flightTicketApp && docker compose up -d --build'
+          sudo bash -c 'cd /home/ec2-user/flightTicketApp && docker compose up -d'
         shell: bash
