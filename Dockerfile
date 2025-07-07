@@ -16,13 +16,14 @@
 FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
 
+# Maven cache klasörünü bağla (build sırasında)
+RUN mkdir -p /root/.m2/repository
+
 COPY pom.xml .
-
-RUN mvn dependency:go-offline -B
-
 COPY src ./src
 
-RUN mvn clean install -DskipTests -B
+RUN mvn -B clean install -DskipTests
+
 
 FROM openjdk:17 AS runtime
 WORKDIR /app
