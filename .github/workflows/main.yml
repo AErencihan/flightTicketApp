@@ -30,11 +30,7 @@ jobs:
 
   deploy:
     runs-on: self-hosted
-    needs: build
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Deploy to server
         run: |
           sudo bash -c 'cd /home/ec2-user/flightTicketApp && docker compose up -d --build'
