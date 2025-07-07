@@ -25,6 +25,8 @@ jobs:
           sudo rm -rf /var/tmp/*
           sudo rm -rf /var/cache/*
           sudo truncate -s 0 /var/log/*.log
+          sudo yum clean all
+          sudo rm -rf /var/cache/yum
         shell: bash
 
       - name: Build Docker image
@@ -49,6 +51,8 @@ jobs:
           sudo rm -rf /var/tmp/*
           sudo rm -rf /var/cache/*
           sudo truncate -s 0 /var/log/*.log
+          sudo yum clean all
+          sudo rm -rf /var/cache/yum
         shell: bash
 
       - name: Deploy to server
