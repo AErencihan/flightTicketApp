@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.stream.Stream;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserService userService;
 
-    public UserDetailServiceImpl(UserService userService){
+    public UserDetailsServiceImpl(UserService userService){
         this.userService = userService;
     }
 
