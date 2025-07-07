@@ -22,7 +22,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          sudo docker build -t flightticket .
+          sudo docker build -t flightticket --progress=plain .
         shell: bash
 
   deploy:
